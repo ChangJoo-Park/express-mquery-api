@@ -19,16 +19,13 @@ router.get('/users', (request, response, next) => {
   const {
     User
   } = models
-  // const options = request.mquery
+  const options = request.mquery
 
-  User.find().then((error, results) => {
-    if (error) response.json(error)
-    response.json(results)
-  })
-  // .get(options, (error, results) => {
-  //   if (error) response.json(error)
-  //   response.json(results)
-  // })
+  User
+    .get(options, (error, results) => {
+      if (error) response.json(error)
+      response.json(results)
+    })
 })
 
 router.post('/signup', async (request, response, next) => {
