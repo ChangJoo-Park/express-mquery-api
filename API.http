@@ -1,0 +1,14 @@
+@host = http://localhost:3000/api
+
+// ?fields=number,amount
+// &filter[name]=Bob
+// &filter[amount][$gte]=1200
+// &include=customer,items
+// &fields[customer]=name,number
+// &fields[items]=name,price
+// &page[number]=1
+// &page[size]=10
+// &sort[number]=1
+// &sort[amount]=-1
+
+GET {{host}}/users HTTP/1.1
