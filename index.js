@@ -58,6 +58,37 @@ router.post('/signin', async (request, response, next) => {
   })
 })
 
+router.get('/posts', (request, response, next) => {
+  const {
+    Post
+  } = models
+  const options = request.mquery
+
+  Post
+    .get(options, (error, results) => {
+      if (error) response.json(error)
+      response.json(results)
+    })
+})
+
+router.post('/posts', (request, response, next) => {
+  const {
+    Post
+  } = models
+  const {
+    authorId,
+    title,
+    body
+  } = request.body
+
+  Post.create(authorId, title, body)
+    .then((result) => {
+      response.json(result)
+    }).catch((err) => {
+      response.status(500).json(err)
+    })
+})
+
 app.use('/api/v1', router)
 
 mongoose.connect('mongodb://localhost/myapp').then(_ => {
