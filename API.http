@@ -11,7 +11,7 @@
 // &sort[number]=1
 // &sort[amount]=-1
 ###
-GET {{host}}/v1/users HTTP/1.1
+GET {{host}}/v1/users?fields=username,email HTTP/1.1
 
 ###
 POST {{host}}/v1/signup HTTP/1.1
