@@ -4,6 +4,7 @@ const mquery = require('express-mquery')
 const morgan = require('morgan')
 const mongoose = require('./db')
 const models = require('./models')
+const router = express.Router()
 const app = express()
 
 app.use(morgan('combined'))
@@ -14,7 +15,7 @@ app.use(mquery({
 }))
 
 // Set Routes
-app.get('/api/users', (request, response, next) => {
+router.get('/users', (request, response, next) => {
   const {
     User
   } = models
@@ -25,6 +26,8 @@ app.get('/api/users', (request, response, next) => {
       response.json(results)
     })
 })
+
+app.use('/api/v1', router)
 
 mongoose.connect('mongodb://localhost/myapp').then(_ => {
   console.log('connect to mongoDB Successfully')

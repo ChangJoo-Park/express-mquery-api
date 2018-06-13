@@ -11,4 +11,4 @@
 // &sort[number]=1
 // &sort[amount]=-1
 
-GET {{host}}/users HTTP/1.1
+GET {{host}}/v1/users HTTP/1.1
