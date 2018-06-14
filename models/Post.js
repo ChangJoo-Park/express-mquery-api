@@ -18,6 +18,19 @@ const Comment = new Schema({
   timestamps: true
 })
 
+const Like = new Schema({
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: 'Comment author cannot be blank'
+  },
+  amount: {
+    type: Number
+  }
+}, {
+  timestamps: true
+})
+
 const postSchema = new Schema({
   author: {
     type: Schema.Types.ObjectId,
@@ -40,6 +53,13 @@ const postSchema = new Schema({
 
   comments: [Comment],
 
+  likes: [Like],
+
+  likeCount: {
+    type: Number,
+    default: 0
+  },
+
   tags: {
     type: [],
     get: tags => tags.join(','),
@@ -59,12 +79,32 @@ postSchema.methods = {
     },
     body
   }) {
-    console.log('author => ', author)
-    console.log('body => ', body)
     this.comments.push({
       author,
       body
     })
+
+    return this.save()
+  },
+
+  addLikes ({
+    author: {
+      _id: author
+    },
+    amount
+  }) {
+    const existsIndex = this.likes.findIndex(l => l.author._id === author._id)
+
+    if (existsIndex === -1) {
+      this.likes.push({
+        author,
+        amount
+      })
+    } else {
+      this.likes[existsIndex].amount += amount
+    }
+
+    this.likeCount += amount
 
     return this.save()
   }
