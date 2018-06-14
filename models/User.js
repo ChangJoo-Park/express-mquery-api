@@ -127,35 +127,19 @@ UserSchema.statics = {
     return newUser.save()
   },
 
-  signIn (email, password) {
+  async signIn (email, password) {
     const User = this
-    return User.load({
+    const u = await User.load({
       criteria: {
         email
       }
     })
-      .then(user => {
-        if (!user) {
-          return Promise.reject(
-            new Error({
-              email: {
-                WrongEmail: 'wrong email address'
-              }
-            })
-          )
-        }
-        if (!user.authenticate(password)) {
-          return Promise.reject(
-            new Error({
-              password: {
-                WrongPassword: 'incorrect password'
-              }
-            })
-          )
-        }
-        user.updateAccessToken()
-        return user.save()
-      })
+
+    if (!u) throw new Error('wrong email address')
+    if (!u.authenticate(password)) throw new Error('incorrect password')
+
+    u.updateAccessToken()
+    return u.save()
   },
 
   authorize (accessToken) {
