@@ -1,9 +1,26 @@
 const mongoose = require('../db')
+
 const Schema = mongoose.Schema
+
+const Comment = new Schema({
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: 'Comment author cannot be blank'
+  },
+
+  body: {
+    type: String,
+    trim: true,
+    required: 'Comment body cannot be blank'
+  }
+}, {
+  timestamps: true
+})
 
 const postSchema = new Schema({
   author: {
-    type: Schema.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'User',
     index: true,
     required: 'Post author cannot be blank'
@@ -21,22 +38,7 @@ const postSchema = new Schema({
     required: 'Post body cannot be blank'
   },
 
-  // comments: [{
-  //   author: {
-  //     type: Schema.ObjectId,
-  //     ref: 'User',
-  //     required: 'Comment author cannot be blank'
-  //   },
-  //   body: {
-  //     type: String,
-  //     trim: true,
-  //     required: 'Comment body cannot be blank'
-  //   },
-  //   createdAt: {
-  //     type: Date,
-  //     default: Date.now
-  //   }
-  // }],
+  comments: [Comment],
 
   tags: {
     type: [],
@@ -57,6 +59,8 @@ postSchema.methods = {
     },
     body
   }) {
+    console.log('author => ', author)
+    console.log('body => ', body)
     this.comments.push({
       author,
       body
